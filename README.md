@@ -4,8 +4,14 @@ This is the official repository for our ACL2025 (Main Conference) paper **Revisi
 ## Introduction
 This paper investigates whether large language models can reliably/consistently express their confidence using epistemic markers instead of numerical values. Our findings indicate that while LLMs' in-distribution marker confidence is relatively stable, its **consistency declines in out-of-distribution scenarios in different perspectives**, raising concerns about the reliability of such markers for confidence estimation.
 
+## clone Marcon to your local environment
+
+git clone https://github.com/HKUST-KnowComp/MarCon.git
+cd MarCon
+
 ## Conda Environment
-[TBD]
+conda env create -f marcon.yml
+conda activate marcon
 
 ## Code Usage
 [TBD]
