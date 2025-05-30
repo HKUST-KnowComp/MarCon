@@ -6,12 +6,19 @@ This paper investigates whether large language models can reliably/consistently 
 
 ## clone Marcon to your local environment
 
+```
 git clone https://github.com/HKUST-KnowComp/MarCon.git
+
 cd MarCon
+```
 
 ## Conda Environment
+
+```
 conda env create -f marcon.yml
+
 conda activate marcon
+```
 
 ## Code Usage
 [TBD]
