@@ -19,7 +19,6 @@ def find_first_yes_no(text):
 
 # this function collects the gennal responses
 def GenNal(QA_pairs, start_index, end_index, dataset_name):
-    # print("Initial SINGLE_TEMPLATE", SINGLE_TEMPLATE)
     # specify the output path
     output_gennal_path = OUTPUT_DATA_DIR + f"{dataset_name}_gennal_{start_index}~{end_index}.json"
     # initialize the list to store the answers
@@ -30,7 +29,6 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
     single_round_marker_list = {}
     double_round_marker_list = {}
     print("Generating Gennal responses...")
-    # retry_list = []
     for i in tqdm.tqdm(range(start_index, end_index)):
         
         
@@ -52,7 +50,7 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
             answer = QA_pairs[i]['answer']
             single_round_gennal = llm.get_response(GENNAL_PROMPT_SINGLE + question + GENNAL_PROMPT_INDUCE, INSTRUCTION)
             i_dic["single_round_gennal"].append({"full_response": single_round_gennal})
-            # double round gennal
+            # double round gennal (not implemented in the final version of paper)
             # binary_answer = llm.get_response(GENNAL_PROMPT_DOUBLE_1 + question, INSTRUCTION)
             binary_answer = None
             i_dic['double_round_gennal'].append({"binary_answer": binary_answer})
@@ -63,24 +61,12 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
             
             # extract the epistemic markers
             # do it on the single_round_gennal first
-            # do exception handling first
-            # retry_dic = {}
-            # retry_dic['index'] = i
             if(i_dic['single_round_gennal'][0]['full_response'] == None):
                 error_list.append({"error_index": i, "error_type": "single", "error_message": "None response"})
                 i_dic['single_round_gennal'][0]["epistemic_markers"] = None
                 i_dic['error'] = "no response"
             else:
                 # set the epistemic markers for the single_round_gennal
-                # no agent & blind version
-                # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE + i_dic['single_round_gennal'][0]['full_response'], 
-                #                                     INSTRUCTION)
-                
-                
-                # agent & clear version: exposed to questions
-                # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE_1 + i_dic['question'] + WEP_DET_PROMPT_SINGLE_2 +
-                #                                      i_dic['single_round_gennal'][0]['full_response'], 
-                #                                     INSTRUCTION)
                 # chat template version
                 SINGLE_TEMPLATE.append({"role": "user", "content": i_dic['single_round_gennal'][0]['full_response']})
                 epistemic_markers = llm.get_response(None, INSTRUCTION, SINGLE_TEMPLATE)
@@ -94,18 +80,13 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                 else:
                     single_round_gennal_backup_1 = llm.get_response(GENNAL_PROMPT_SINGLE + question, INSTRUCTION)
                     i_dic['single_round_gennal'][0]["full_response"] = single_round_gennal_backup_1
-                    
                 
-                    # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE_1 + i_dic['question'] + WEP_DET_PROMPT_SINGLE_2 +
-                    #                                     i_dic['single_round_gennal'][0]['full_response'],
-                    #                                     INSTRUCTION)
                     # chat template version
                     SINGLE_TEMPLATE.append({"role": "user", "content": i_dic['single_round_gennal'][0]['full_response']})
                     epistemic_markers = llm.get_response(None, INSTRUCTION, SINGLE_TEMPLATE)
                     SINGLE_TEMPLATE.pop()
                     
                     
-                    # retry_dic['trial_1'] = {"full_response": single_round_gennal_backup_1, "detection": epistemic_markers}
                     match = re.search(r"\*\*(.*?)\*\*", epistemic_markers)
                     if match:
                         epistemic_markers = match.group(1) 
@@ -115,15 +96,11 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                         i_dic['single_round_gennal'][0]["full_response"] = single_round_gennal_backup_2
                         
                         
-                        # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE_1 + i_dic['question'] + WEP_DET_PROMPT_SINGLE_2 +
-                        #                                     i_dic['single_round_gennal'][0]['full_response'],
-                        #                                     INSTRUCTION)
                         SINGLE_TEMPLATE.append({"role": "user", "content": i_dic['single_round_gennal'][0]['full_response']})
                         epistemic_markers = llm.get_response(None, INSTRUCTION, SINGLE_TEMPLATE)
                         SINGLE_TEMPLATE.pop()
                         
                         
-                        # retry_dic['trial_2'] = {"full_response": single_round_gennal_backup_2, "detection": epistemic_markers}
                         match = re.search(r"\*\*(.*?)\*\*", epistemic_markers)
                         if match:
                             epistemic_markers = match.group(1) 
@@ -133,15 +110,11 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                             i_dic['single_round_gennal'][0]["full_response"] = single_round_gennal_backup_3
                             
                             
-                            # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE_1 + i_dic['question'] + WEP_DET_PROMPT_SINGLE_2 +
-                            #                                     i_dic['single_round_gennal'][0]['full_response'],
-                            #                                     INSTRUCTION)
                             SINGLE_TEMPLATE.append({"role": "user", "content": i_dic['single_round_gennal'][0]['full_response']})
                             epistemic_markers = llm.get_response(None, INSTRUCTION, SINGLE_TEMPLATE)
                             SINGLE_TEMPLATE.pop()
                             
                             
-                            # retry_dic['trial_3'] = {"full_response": single_round_gennal_backup_3, "detection": epistemic_markers}
                             match = re.search(r"\*\*(.*?)\*\*", epistemic_markers)
                             if match:
                                 epistemic_markers = match.group(1) 
@@ -151,15 +124,10 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                                 i_dic['single_round_gennal'][0]["full_response"] = single_round_gennal_backup_4
                                 
                                 
-                                # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE_1 + i_dic['question'] + WEP_DET_PROMPT_SINGLE_2 +
-                                #                                     i_dic['single_round_gennal'][0]['full_response'],
-                                #                                     INSTRUCTION)
                                 SINGLE_TEMPLATE.append({"role": "user", "content": i_dic['single_round_gennal'][0]['full_response']})
                                 epistemic_markers = llm.get_response(None, INSTRUCTION, SINGLE_TEMPLATE)
                                 SINGLE_TEMPLATE.pop()
                                 
-                                
-                                # retry_dic['trial_4'] = {"full_response": single_round_gennal_backup_4, "detection": epistemic_markers}
                                 match = re.search(r"\*\*(.*?)\*\*", epistemic_markers)
                                 if match:
                                     epistemic_markers = match.group(1) 
@@ -169,15 +137,10 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                                     i_dic['single_round_gennal'][0]["full_response"] = single_round_gennal_backup_5
                                     
                                     
-                                    # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE_1 + i_dic['question'] + WEP_DET_PROMPT_SINGLE_2 +
-                                    #                                     i_dic['single_round_gennal'][0]['full_response'],
-                                    #                                     INSTRUCTION)
                                     SINGLE_TEMPLATE.append({"role": "user", "content": i_dic['single_round_gennal'][0]['full_response']})
                                     epistemic_markers = llm.get_response(None, INSTRUCTION, SINGLE_TEMPLATE)
                                     SINGLE_TEMPLATE.pop()
                                     
-                                    
-                                    # retry_dic['trial_5'] = {"full_response": single_round_gennal_backup_5, "detection": epistemic_markers}
                                     match = re.search(r"\*\*(.*?)\*\*", epistemic_markers)
                                     if match:
                                         epistemic_markers = match.group(1) 
@@ -187,8 +150,6 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                                         i_dic["error"] = "no marker"
             if(i_dic['single_round_gennal'][0]["epistemic_markers"] != None):
                 i_dic['single_round_gennal'][0]["epistemic_markers"] = remove_non_alphanumeric(i_dic['single_round_gennal'][0]["epistemic_markers"])
-
-            # retry_list.append(retry_dic)
                                         
             # then do it on the double_round_gennal
             # do exception handling first
@@ -199,22 +160,6 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                 error_list.append({"error_index": i, "error_type": "double", "error_message": "None full text response"})
                 i_dic['double_round_gennal'][0]["epistemic_markers"] = None
             else:
-                # set the epistemic markers for the double_round_gennal
-                # blind version: not exposed to questions
-                # epistemic_markers = llm.get_response(WEP_DET_PROMPT_SINGLE + i_dic['double_round_gennal'][0]['full_response'], 
-                #                                     INSTRUCTION)
-                # no agent & clear version: exposed to questions, bi_answer and self-estimation are combined
-                # epistemic_markers = llm.get_response(WEP_DET_PROMPT_DOUBLE_1 + i_dic['question'] + WEP_DET_PROMPT_DOUBLE_2 +
-                #                                      i_dic['double_round_gennal'][0]["binary_answer"] +
-                #                                      i_dic['double_round_gennal'][0]['full_response'], 
-                #                                      INSTRUCTION)
-                # agent & clear version: exposed to questions, bi_answer and self-estimation are separated to detect initial 'Certainly'
-                '''
-                epistemic_markers = llm.get_response(WEP_DET_PROMPT_DOUBLE_1 + i_dic['question'] + WEP_DET_PROMPT_DOUBLE_2 +
-                                                     i_dic['double_round_gennal'][0]["binary_answer"] + WEP_DET_PROMPT_DOUBLE_3 +
-                                                     i_dic['double_round_gennal'][0]['full_response'] + GENNAL_PROMPT_DOUBLE_4, 
-                                                     INSTRUCTION)
-                '''
                 epistemic_markers = None
                 match = re.search(r"\*\*(.*?)\*\*", epistemic_markers)
                 if match:
@@ -227,18 +172,12 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
                 
             # judge whether each question is right
             # single round gennal first
-            # gold_answer = i_dic['gold_answer']
             single_binary_answer = find_first_yes_no(i_dic['single_round_gennal'][0]['full_response'])
             print("single round gennal answer:", single_binary_answer)
             single_binary_answer = single_binary_answer.lower() if single_binary_answer != None else None
             i_dic['single_round_gennal'][0]['binary_answer'] = single_binary_answer
-            # double_binary_answer = find_first_yes_no(i_dic['double_round_gennal'][0]['binary_answer'])
             double_binary_answer = None
             double_binary_answer = double_binary_answer.lower() if double_binary_answer != None else None
-            # print(f"index {i}: binary answer: {single_binary_answer}")
-            # print(f"index {i}: binary answer is a str: {isinstance(single_binary_answer, str)}")
-            # print(f"index {i}: binary answer == 'yes'? {single_binary_answer == 'yes'}")
-            # print(f"index {i}: gold answer == 'yes'? {gold_answer == 'yes'}")
             if(i_dic['single_round_gennal'][0]['full_response'] == None
                or single_binary_answer == None):
                 print("correctness is none since no response or no binary answer detected.")
@@ -253,7 +192,7 @@ def GenNal(QA_pairs, start_index, end_index, dataset_name):
             else:
                 print("correctness is none since binary answer detected is neither yes nor no.")
                 i_dic['single_round_gennal'][0]["correctness"] = None
-            # then double round gennal
+            # then double round gennal (could be ignored)
             if(i_dic['double_round_gennal'][0]['binary_answer'] == None):
                 i_dic['double_round_gennal'][0]["correctness"] = None
             elif((double_binary_answer == "yes" and i_dic['gold_answer'] == True) or
