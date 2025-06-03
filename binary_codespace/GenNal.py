@@ -370,8 +370,7 @@ def marker_counter(dataset_name,datapath=None, data=None):
     for i in tqdm.tqdm(range(len(data))):
         # add the markers into the marker list
         # single round gennal first 
-        # with open(f"C:/Users/Lenovo/Desktop/Uncertainty/experiment/temp_data/{dataset_name}_gennal_{i}.json", "w", encoding="utf-8") as f:
-        #     json.dump(data, f, ensure_ascii=False, indent=4)
+        
         if(data[i]['single_round_gennal'][0]["epistemic_markers"] != None
            and data[i]["error"] == "no error"):
             if(data[i]['single_round_gennal'][0]["epistemic_markers"] not in single_round_marker_list):
