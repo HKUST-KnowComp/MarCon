@@ -23,7 +23,23 @@ cd MarCon
 ```
 
 ## Code Usage
+For datasets with binary answer, run:
+```
+python binary_codespace/prompt_adjustor.py
+```
+to get the ECE values presented in the paper.
+
+For multiple-choice datasets, run:
+```
+python MC_codespace/prompt_adjustor.py
+```
+to get the ECE values presented in the paper.
+
+For the marker analysis experiments (C-AvgCV, MAC, MRC, I-AvgCV), run:
+```
 [TBD]
+```
+to get the results. You can adjust the filtering threshold by changing the value of ```filter_threshold``` in [analysis.py]().
 
 ## Citing this work
 ```
