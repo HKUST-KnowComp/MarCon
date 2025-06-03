@@ -37,9 +37,9 @@ to get the ECE values presented in the paper.
 
 For the marker analysis experiments (C-AvgCV, MAC, MRC, I-AvgCV), run:
 ```
-analysis.py
+marker_analysis.py
 ```
-to get the results. You can adjust the filtering threshold by changing the value of ```filter_threshold``` in [analysis.py]().
+to get the results. You can adjust the filtering threshold by changing the value of ```filter_threshold``` in [marker_analysis.py](https://github.com/HKUST-KnowComp/MarCon/blob/main/marker_analysis.py).
 
 ## Citing this work
 ```
