@@ -37,7 +37,7 @@ to get the ECE values presented in the paper.
 
 For the marker analysis experiments (C-AvgCV, MAC, MRC, I-AvgCV), run:
 ```
-[TBD]
+analysis.py
 ```
 to get the results. You can adjust the filtering threshold by changing the value of ```filter_threshold``` in [analysis.py]().
 
