@@ -1,6 +1,9 @@
 # MarCon
 Official repository for our ACL2025 (Main Conference) paper [Revisiting Epistemic Markers in Confidence Estimation: Can Markers Accurately Reflect Large Language Models' Uncertainty?](https://arxiv.org/abs/2505.24778).
 
+# Updates
+[2025/8/2] Get a clear overview and use guidance [here](https://code2tutorial.com/tutorial/26e63eb9-c39f-4726-80dd-392721a55e7b/index.md)!
+
 ## Abstract
 As Large Language Models (LLMs) are increasingly used in high-stakes domains, accurately assessing their confidence is crucial. Humans typically express confidence through epistemic markers (e.g., “fairly confident”) instead of numerical values. However, it remains unclear whether LLMs reliably use these markers to reflect their intrinsic confidence due to the
 difficulty of quantifying uncertainty associated with various markers. To address this gap, we first define marker confidence as the observed accuracy when a model employs an epistemic
