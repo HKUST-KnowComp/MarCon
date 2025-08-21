@@ -46,14 +46,18 @@ to get the results. You can adjust the filtering threshold by changing the value
 
 ## Citing this work
 ```
-@misc{liu2025revisitingepistemicmarkersconfidence,
-      title={Revisiting Epistemic Markers in Confidence Estimation: Can Markers Accurately Reflect Large Language Models' Uncertainty?}, 
-      author={Jiayu Liu and Qing Zong and Weiqi Wang and Yangqiu Song},
-      year={2025},
-      eprint={2505.24778},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2505.24778}, 
+@inproceedings{liu2025revisitingepistemicmarkersconfidence,
+    title = {Revisiting Epistemic Markers in Confidence Estimation: Can Markers Accurately Reflect Large Language Models' Uncertainty?},
+    author = {Jiayu Liu and Qing Zong and Weiqi Wang and Yangqiu Song},
+    booktitle = {Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+    month = jul,
+    year = {2025},
+    address = {Vienna, Austria},
+    publisher = {Association for Computational Linguistics},
+    url = {https://aclanthology.org/2025.acl-short.18/},
+    doi = {10.18653/v1/2025.acl-short.18},
+    pages = {206--221},
+    isbn = {979-8-89176-252-7}
 }
 ```
 
